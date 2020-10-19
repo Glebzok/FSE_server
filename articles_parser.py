@@ -8,13 +8,13 @@ from bs4 import BeautifulSoup
 from aticles_preprocesser import preprocess_text
 
 
-def get_full_paper_data(main_url, abtract_add_url,
+def get_full_paper_data(main_url, abstract_add_url,
                         pdf_folder, bibtex_folder, metadata_folder, preprocessed_paper_folder):
     """
     Download paper in pdf format, bibtex file, metadata and preprocessed text for a given paper
     """
 
-    abstract_response = requests.get(main_url + abtract_add_url, allow_redirects=True)
+    abstract_response = requests.get(main_url + abstract_add_url, allow_redirects=True)
 
     paper_name = (BeautifulSoup(abstract_response.text, 'html.parser')
                   .find_all('h4')[0].text
@@ -22,7 +22,7 @@ def get_full_paper_data(main_url, abtract_add_url,
                   .replace('\\', '_')
                   .replace(' ', '_'))
 
-    files_add_load_url = abtract_add_url.replace('hash', 'file')
+    files_add_load_url = abstract_add_url.replace('hash', 'file')
 
     paper_add_load_url = files_add_load_url.replace('Abstract.html', 'Paper.pdf')
     paper_response = requests.get(main_url + paper_add_load_url, allow_redirects=True)
