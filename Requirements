@@ -1,0 +1,10 @@
+tqdm
+bs4
+nltk
+requests
+wheel
+flask
+gunicorn
+pandas
+sklearn
+pdfplumber
