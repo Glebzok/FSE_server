@@ -4,6 +4,17 @@ from nltk.corpus import stopwords, wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
+import pdfplumber
+
+
+def pdf_to_str(path):
+    """Get text from PDF"""
+    text = ''
+    with pdfplumber.open(path) as pdf:
+        for i, pg in enumerate(pdf.pages):
+            text += pg.extract_text(x_tolerance=0, y_tolerance=0)
+    return text
+
 
 def remove_special_characters(text):
     regex = r'[^a-zA-Z0-9\s]'  # Leave only letters and numbers (maybe it's better to remove numbers?)

@@ -8,3 +8,4 @@ gunicorn
 pandas
 sklearn
 pdfplumber
+numpy
