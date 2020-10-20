@@ -18,7 +18,7 @@ def search_by_query():
     except Exception as e:
         abort(400, f"Unknown error ({repr(e)}")
     else:
-        return jsonify({'reshonse': response}), 200
+        return jsonify({'response': response}), 200
 
 
 @app.route("/search_by_dataset")
