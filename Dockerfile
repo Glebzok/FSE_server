@@ -9,5 +9,13 @@ WORKDIR /FSE_server
 
 RUN pip3 install -r Requirements
 
+ARG CACHE_DATE=2016-01-01
 
+RUN cd ..
+RUN git clone --single-branch --branch master https://github.com/Glebzok/FSE_server.git
+RUN /FSE_server
+
+CMD [ "python3", "./download_nltk_data.py" ]
+
+RUN gunicorn -D --bind 0.0.0.0:5000 wsgi:app
 
