@@ -1,1 +1,1 @@
-web: python3 ./add_articles.py -r -y 1 -a 1 && python3 server.py
+web: python3 ./add_articles.py -r -y 1 -a 1 && gunicorn --bind 0.0.0.0:8000 wsgi:app --log-file=-
