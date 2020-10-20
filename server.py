@@ -1,18 +1,24 @@
-from flask import Flask, jsonify, request, send_from_directory, send_file
+from flask import Flask, jsonify, request, abort
+from flask_cors import CORS
 from response import get_search_query_response
-import os
-from add_articles import main_path
 
 app = Flask(__name__, static_url_path='/', static_folder='./papers_data/pdf/')
+CORS(app)
 
 
 @app.route('/hello')
 def hello():
     return 'hello'
 
-@app.route("/search_by_query")
+@app.route("/search_by_query", methods=['GET'])
 def search_by_query():
-    return jsonify(get_search_query_response(request.args.get('query')))
+    query = request.args.get('query', default="", type=str)
+    try:
+        response = get_search_query_response(query)
+    except Exception as e:
+        abort(400, f"Unknown error ({repr(e)}")
+    else:
+        return jsonify({'reshonse': response}), 200
 
 
 @app.route("/search_by_dataset")
