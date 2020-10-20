@@ -1,1 +1,1 @@
-web: python3 ./download_nltk_data.py & python3 ./add_articles.py -r -y 2 -a 2 & gunicorn wsgi:app
+web: python3 ./download_nltk_data.py & python3 ./add_articles.py -r -y 2 -a 2 & gunicorn wsgi:app -log_file=-
