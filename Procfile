@@ -1,1 +1,1 @@
-web: python3 ./add_articles.py -r -y 33 -a 30 & gunicorn wsgi:app --workers=10 --log-file=-
+web: python3 ./add_articles.py -r -y 33 -a 30 & gunicorn wsgi:app --log-file=-
