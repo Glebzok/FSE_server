@@ -41,7 +41,8 @@ def get_full_paper_data(main_url, abstract_add_url,
 
 
 def get_one_year_papers(main_url, add_year_url,
-                        pdf_folder, bibtex_folder, metadata_folder, preprocessed_papers_folder, test=False):
+                        pdf_folder, bibtex_folder, metadata_folder, preprocessed_papers_folder,
+                        download_papers_per_year=None):
     """
     Parse all papers for a given year from https://proceedings.neurips.cc and save papers in pdf format, bibtex
     files, metadata and preprocessed papers text
@@ -52,15 +53,15 @@ def get_one_year_papers(main_url, add_year_url,
 
     abstracts_add_url = [i.a['href'] for i in soup.find_all('ul')[1].find_all('li')]
 
-    if test:
-        abstracts_add_url = abstracts_add_url[:2]
+    if download_papers_per_year is not None:
+        abstracts_add_url = abstracts_add_url[:download_papers_per_year]
 
     for abstract_add_url in tqdm(abstracts_add_url, leave=False, desc='Papers'):
         get_full_paper_data(main_url, abstract_add_url,
                             pdf_folder, bibtex_folder, metadata_folder, preprocessed_papers_folder)
 
 
-def get_all_papers(save_dir='./test_papers', test=False):
+def get_all_papers(save_dir='./test_papers', n_download_years=None, n_download_papers_per_year=None):
     """
     Parse all papers from https://proceedings.neurips.cc and save papers in pdf format, bibtex
     files, metadata and preprocessed papers text
@@ -79,11 +80,12 @@ def get_all_papers(save_dir='./test_papers', test=False):
 
     add_year_urls = sorted(
         [i.a['href'] for i in BeautifulSoup(main_response.text, 'html.parser').find_all('div', 'col-sm')[0].find_all('li')])
-    if test:
-        add_year_urls = add_year_urls[:2]
+    if n_download_years is not None:
+        add_year_urls = add_year_urls[:n_download_years]
     for add_year_url in tqdm(add_year_urls, leave=False, desc='Years'):
         get_one_year_papers(main_url, add_year_url,
-                            pdf_folder, bibtex_folder, metadata_folder, preprocessed_papers_folder, test)
+                            pdf_folder, bibtex_folder, metadata_folder, preprocessed_papers_folder,
+                            n_download_papers_per_year)
 
 
 def index_papers(save_dir, papers_dir):

@@ -6,9 +6,13 @@ from add_articles import main_path
 app = Flask(__name__)
 
 
+@app.route('/hello')
+def hello():
+    return 'hello'
+
 @app.route("/search_by_query")
 def search_by_query():
-    return jsonify(get_search_query_response(request.json['query']))
+    return jsonify(get_search_query_response(request.args.get('query')))
 
 
 @app.route("/search_by_dataset")

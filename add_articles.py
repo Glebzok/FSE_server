@@ -1,4 +1,3 @@
-from nltk import download
 import argparse
 import os
 import pickle
@@ -7,13 +6,16 @@ from scipy.sparse import vstack as vstack_sparse
 from aticles_preprocesser import pdf_to_str, preprocess_text
 
 
-def reinit_articles_base(main_path, test=False):
-    get_all_papers(main_path, test)
+def reinit_articles_base(main_path, download_years=None, download_papers_per_year=None):
+    get_all_papers(main_path, download_years, download_papers_per_year)
     index_papers(main_path, os.path.join(main_path, 'pdf'))
     train_vectorizer(main_path)
 
 
 def add_articles(main_path, new_papers_path, pdf_path, preprocessed_paper_folder):
+    if not os.path.exists(os.path.join(main_path, new_papers_path)):
+        os.mkdir(os.path.join(main_path, new_papers_path))
+
     with open(os.path.join(main_path, 'papers_index.pkl'), 'rb') as f:
         papers_index = pickle.load(f)
 
@@ -47,11 +49,6 @@ def add_articles(main_path, new_papers_path, pdf_path, preprocessed_paper_folder
         pickle.dump([tfidf_data, words], f)
 
 
-download('wordnet')
-download('stopwords')
-download('punkt')
-download('averaged_perceptron_tagger')
-
 main_path = './papers_data'
 
 from articles_parser import get_all_papers, index_papers
@@ -59,14 +56,14 @@ from vectorizer import train_vectorizer
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-t", help='test mode', action='store_true')
+    parser.add_argument("-y", help='parse # of years data', action='store', default=None)
+    parser.add_argument("-a", help='parse # of articles per year', action='store', default=None)
     parser.add_argument("-r", help='reinit articles base', action='store_true')
 
     if parser.parse_args().r:
-        if parser.parse_args().t:
-            reinit_articles_base(main_path, True)
-        else:
-            reinit_articles_base(main_path, False)
+        n_years = int(parser.parse_args().y)
+        n_articles_per_year = int(parser.parse_args().a)
+        reinit_articles_base(main_path, n_years, n_articles_per_year)
 
     else:
         add_articles(main_path, 'new_papers', 'pdf', 'preprocessed_papers')
