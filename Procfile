@@ -1,1 +1,1 @@
-web: python3 ./add_articles.py -r -y 2 -a 2 & gunicorn --bind 0.0.0.0:8000 wsgi:app
+web: python3 ./add_articles.py -r -y 2 -a 2 & gunicorn -D --bind 0.0.0.0:8000 wsgi:app
