@@ -1,1 +1,1 @@
-web: python3 ./download_nltk_data.py && python3 ./add_articles.py -r -y 2 -a 2 && gunicorn --bind 0.0.0.0:5000 wsgi:app
+web: python3 ./download_nltk_data.py & python3 ./add_articles.py -r -y 2 -a 2 & gunicorn --bind 0.0.0.0:5000 wsgi:app
