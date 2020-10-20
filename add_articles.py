@@ -1,3 +1,4 @@
+
 import argparse
 import os
 import pickle
@@ -20,7 +21,7 @@ def add_articles(main_path, new_papers_path, pdf_path, preprocessed_paper_folder
         papers_index = pickle.load(f)
 
     with open(os.path.join(main_path, 'tfidf_vectorizer.pkl'), 'rb') as f:
-        vectorizer = pickle.load(f)
+        vectorizer = pickle. load(f)
 
     with open(os.path.join(main_path, 'tfidf_matrix.pkl'), 'rb') as f:
         tfidf_data, words = pickle.load(f)
@@ -47,7 +48,6 @@ def add_articles(main_path, new_papers_path, pdf_path, preprocessed_paper_folder
 
     with open(os.path.join(main_path, 'tfidf_matrix.pkl'), 'wb') as f:
         pickle.dump([tfidf_data, words], f)
-
 
 main_path = './papers_data'
 

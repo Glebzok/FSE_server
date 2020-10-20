@@ -11,11 +11,14 @@ RUN pip3 install -r Requirements
 
 ARG CACHE_DATE=2016-01-01
 
-RUN cd ..
-RUN git clone --single-branch --branch master https://github.com/Glebzok/FSE_server.git
-RUN /FSE_server
+RUN rm -rf *
+RUN rm -rf .git
 
-CMD [ "python3", "./download_nltk_data.py" ]
+RUN git clone --single-branch --branch master https://github.com/Glebzok/FSE_server.git .
 
-RUN gunicorn -D --bind 0.0.0.0:5000 wsgi:app
+EXPOSE 5000
+
+RUN python3 ./download_nltk_data.py
+#RUN python3 ./add_articles.py -r -y 2 -a 2
+#RUN gunicorn --bind 0.0.0.0:5000 wsgi:app
 

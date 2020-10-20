@@ -31,6 +31,6 @@ def get_search_query_response(search_query, main_path='./papers_data', n=20):
     best_matching_articles_names = [papers_index[paper_idx] for paper_idx in best_matching_articles_idx[:n]]
 
     response = {'result': [{'name': paper_name.replace('_', ' '),
-                            'link': 'download/' + paper_name} for paper_name in best_matching_articles_names]}
+                            'link': paper_name + '.pdf'} for paper_name in best_matching_articles_names]}
 
     return response
