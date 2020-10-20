@@ -1,1 +1,1 @@
-web: python3 ./add_articles.py -r -y 10 -a 10 && gunicorn wsgi:app --log-file=-
+web: python3 ./add_articles.py -r -y 2 -a 2 && gunicorn wsgi:app --log-file=-
