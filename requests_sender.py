@@ -14,7 +14,7 @@ if __name__ == '__main__':
     response = requests.get(address1, params=request)
     print('code:', response)
     print(response.text)
-    # download_url = json.loads(response.text)['result'][1]['link']
-    # print(download_url)
+    download_url = json.loads(response.text)['result'][1]['link']
+    print(download_url)
     # response = requests.get(address+download_url)
     # open('hoba.pdf', 'wb').write(response.content)
