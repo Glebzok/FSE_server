@@ -1,18 +1,19 @@
-
 import argparse
 import os
 import pickle
 from scipy.sparse import vstack as vstack_sparse
 
 from aticles_preprocesser import pdf_to_str, preprocess_text
+from datasets_finder import get_papers_to_dataset
 
 
 def reinit_articles_base(main_path, download_years=None, download_papers_per_year=None):
     get_all_papers(main_path, download_years, download_papers_per_year)
     index_papers(main_path, os.path.join(main_path, 'pdf'))
     train_vectorizer(main_path)
+    get_papers_to_dataset(main_path)
 
-
+# don't update datasets currently
 def add_articles(main_path, new_papers_path, pdf_path, preprocessed_paper_folder):
     if not os.path.exists(os.path.join(main_path, new_papers_path)):
         os.mkdir(os.path.join(main_path, new_papers_path))

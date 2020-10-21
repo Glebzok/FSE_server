@@ -23,28 +23,20 @@ def get_best_matching_articles_idx(search_query,
     return np.argsort(np_search_matrix)[::-1]
 
 
-def get_search_query_response(search_query, main_path='./papers_data', n=20):
-    best_matching_articles_idx = get_best_matching_articles_idx(search_query)
-
-    with open(os.path.join(main_path, 'papers_index.pkl'), 'rb') as f:
-        papers_index = pickle.load(f)
-
-    best_matching_articles_names = [papers_index[paper_idx] for paper_idx in best_matching_articles_idx[:n]]
-
-    response = {'result': [{'name': paper_name.replace('_', ' '),
-                            'link': paper_name + '.pdf'} for paper_name in best_matching_articles_names]}
-
-    return response
-
-
 def get_best_matching_articles_by_dataset_idx(search_query, datasets_file='./papers_data/dataset_with_articles.pkl'):
     with open(datasets_file, 'rb') as f:
         datasets = pickle.load(f)
 
-    search_datasets = search_query[11:-1].split(',')
-    datasets = list(set([datasets[search_dataset] for search_dataset in search_datasets
-                         if search_dataset in datasets.keys()]))
-    return datasets
+    search_datasets = list(map(lambda x: x.split('"')[1].lower(), search_query.replace('data-eval:', '').split(',')))
+    articles_idx = list(set([paper for dataset in [datasets[search_dataset] for search_dataset in search_datasets
+                                                   if search_dataset in datasets.keys()]
+                             for paper in dataset]))
+
+    if len(articles_idx) == 0:
+        datasets_as_keywords = ' '.join(search_datasets)
+        articles_idx = get_best_matching_articles_idx(datasets_as_keywords)
+
+    return articles_idx
 
 
 def get_search_query_response(search_query, main_path='./papers_data', n=20):
