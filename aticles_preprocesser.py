@@ -16,7 +16,7 @@ def pdf_to_str(path):
     """
 
     with pdfplumber.open(path) as pdf:
-        text = reduce(lambda doc, page: doc+page.extract_text(x_tolerance=0, y_tolerance=0), pdf.pages)
+        text = reduce(lambda doc, page: doc+(page.extract_text(x_tolerance=0, y_tolerance=0)), pdf.pages, '')
     return text
 
 

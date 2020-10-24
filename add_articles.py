@@ -73,7 +73,7 @@ def add_articles(papers_data_path, new_papers_path, pdf_papers_path, preprocesse
                   os.path.join(papers_data_path, pdf_papers_path, paper))
 
         if type(paper_str) == str:
-            evaluation_text = extract_evaluation_part(paper_str)
+            evaluation_text = extract_evaluation_part(paper_str, papers_data_path)
 
             if evaluation_text is not None:
                 evaluation_text = evaluation_text.lower()
