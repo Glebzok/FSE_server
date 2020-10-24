@@ -107,8 +107,13 @@ if __name__ == '__main__':
                         , action='store_true')
 
     if parser.parse_args().r:
-        n_years = int(parser.parse_args().y)
-        n_articles_per_year = int(parser.parse_args().a)
+        n_years = parser.parse_args().y
+        n_articles_per_year = parser.parse_args().a
+        if n_years is not None:
+            n_years = int(n_years)
+        if n_articles_per_year is not None:
+            n_articles_per_year = int(n_articles_per_year)
+
         reinit_articles_base(papers_data_path, 'pdf', n_years, n_articles_per_year)
 
     else:
