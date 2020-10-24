@@ -7,6 +7,7 @@ from aticles_preprocesser import pdf_to_str, preprocess_text
 from articles_parser import get_all_papers, index_papers
 from datasets_finder import get_papers_to_dataset
 from vectorizer import train_vectorizer
+from datasets_finder import extract_evaluation_part
 
 
 def reinit_articles_base(papers_data_path, pdf_papers_path, download_years=None, download_papers_per_year=None):
@@ -45,6 +46,12 @@ def add_articles(papers_data_path, new_papers_path, pdf_papers_path, preprocesse
     with open(os.path.join(papers_data_path, 'tfidf_matrix.pkl'), 'rb') as f:
         tfidf_data, words = pickle.load(f)
 
+    with open(os.path.join(papers_data_path, 'dataset_with_articles.pkl'), 'wb') as f:
+        dataset_with_articles = pickle.load(f)
+
+    with open(os.path.join(papers_data_path, 'wiki_datasets.pkl'), 'rb') as f:
+        datasets = pickle.load(f)
+
     # index to new papers to start
     max_ind = max(papers_index.keys()) + 1
 
@@ -65,17 +72,32 @@ def add_articles(papers_data_path, new_papers_path, pdf_papers_path, preprocesse
         os.rename(os.path.join(papers_data_path, new_papers_path, paper),
                   os.path.join(papers_data_path, pdf_papers_path, paper))
 
+        if type(paper_str) == str:
+            evaluation_text = extract_evaluation_part(paper_str)
+
+            if evaluation_text is not None:
+                evaluation_text = evaluation_text.lower()
+
+                for dataset in datasets:
+                    search_dataset_in_paper = evaluation_text.find(dataset)
+
+                    if search_dataset_in_paper != -1:
+                        dataset_with_articles[dataset].append(paper_id)
+
     with open(os.path.join(papers_data_path, 'papers_index.pkl'), 'wb') as f:
         pickle.dump(papers_index, f)
 
     with open(os.path.join(papers_data_path, 'tfidf_matrix.pkl'), 'wb') as f:
         pickle.dump([tfidf_data, words], f)
 
+    with open(os.path.join(papers_data_path, 'dataset_with_articles.pkl'), 'wb') as f:
+        pickle.dump(dataset_with_articles, f)
+
 
 if __name__ == '__main__':
 
     papers_data_path = './papers_data'
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-y", help='parse # of years data, if not specified then parse all',
                         action='store', default=None)

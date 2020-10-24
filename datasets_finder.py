@@ -58,7 +58,6 @@ def get_papers_to_dataset(paper_data_path):
     """
     Get datasets-papers index
     :param paper_data_path:  path to papers data
-    :return: dictionary like {dataset1:[paper1_id, paper2_id, ...], ...}
     """
     with open(os.path.join(paper_data_path, 'papers_index.pkl'), 'rb') as f:
         papers_index = pickle.load(f)
@@ -92,4 +91,5 @@ def get_papers_to_dataset(paper_data_path):
                     if search_dataset_in_paper != -1:
                         dataset_with_articles[dataset].append(paper_id)
 
-    return dataset_with_articles
+    with open(os.path.join(paper_data_path, 'dataset_with_articles.pkl'), 'wb') as f:
+        pickle.dump(dataset_with_articles, f)
