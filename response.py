@@ -8,6 +8,13 @@ import re
 def get_best_matching_articles_idx(search_query,
                                    tfidf_matrix_path='./papers_data/tfidf_matrix.pkl',
                                    tfidf_vectorizer_path='./papers_data/tfidf_vectorizer.pkl'):
+    """
+    Search for the best matching to the search query papers
+    :param search_query: user search query
+    :param tfidf_matrix_path:  path to out papers' tdidf matrix
+    :param tfidf_vectorizer_path:  path to our tfidf papers vectorizer
+    :return: indexes of all papers sorted by the relevance, starting with most relevant
+    """
     preprocessed_search_text = preprocess_text(search_query)
 
     with open(tfidf_matrix_path, 'rb') as f:
@@ -24,6 +31,12 @@ def get_best_matching_articles_idx(search_query,
 
 
 def get_best_matching_articles_by_dataset_idx(search_query, datasets_file='./papers_data/dataset_with_articles.pkl'):
+    """
+    Searches for papers which where evaluated on datasets mentioned in the search query
+    :param search_query: user search query in the format: 'data-eval:"dataset1", "dataset2"'
+    :param datasets_file: path to the datasets-papers index
+    :return: indexes of the papers, mentioning these datasets
+    """
     with open(datasets_file, 'rb') as f:
         datasets = pickle.load(f)
 
@@ -40,6 +53,14 @@ def get_best_matching_articles_by_dataset_idx(search_query, datasets_file='./pap
 
 
 def get_search_query_response(search_query, main_path='./papers_data', n=20):
+    """
+    Understand what type of query (simple search / dataset search) it is and return the relevant answer
+    if it matches 'data-eval:"dataset1", "dataset2"' pattern it is dataset search query, otherwise it is a general one
+    :param search_query: user search query
+    :param main_path: path to all papers data
+    :param n: number of search results to return
+    :return: dict {'results': [{'name': paper1_name, 'link': paper1_download_link}, ...]}
+    """
     if re.match('^data-eval:".*"$', search_query):
         best_matching_articles_idx = get_best_matching_articles_by_dataset_idx(search_query)
     else:

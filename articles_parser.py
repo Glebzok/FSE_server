@@ -12,6 +12,12 @@ def get_full_paper_data(main_url, abstract_add_url,
                         pdf_folder, bibtex_folder, metadata_folder, preprocessed_paper_folder):
     """
     Download paper in pdf format, bibtex file, metadata and preprocessed text for a given paper
+    :param main_url: neurips proceedings main page url
+    :param abstract_add_url: papers abstract url suffix
+    :param pdf_folder: path to pdf files to save
+    :param bibtex_folder: path to bibtex files to save
+    :param metadata_folder: path to metadata files to save
+    :param preprocessed_paper_folder: path to preprocessed papers texts to save
     """
 
     abstract_response = requests.get(main_url + abstract_add_url, allow_redirects=True)
@@ -46,6 +52,14 @@ def get_one_year_papers(main_url, add_year_url,
     """
     Parse all papers for a given year from https://proceedings.neurips.cc and save papers in pdf format, bibtex
     files, metadata and preprocessed papers text
+    :param main_url: main_url: neurips proceedings main page url
+    :param add_year_url: year' papers url suffix
+    :param pdf_folder: path to pdf files to save
+    :param bibtex_folder: path to bibtex files to save
+    :param metadata_folder: path to metadata files to save
+    :param preprocessed_papers_folder: path to preprocessed papers texts to save
+    :param download_papers_per_year: # of papers per year to download
+    :return:
     """
 
     res = requests.get(main_url + add_year_url)
@@ -65,6 +79,9 @@ def get_all_papers(save_dir='./test_papers', n_download_years=None, n_download_p
     """
     Parse all papers from https://proceedings.neurips.cc and save papers in pdf format, bibtex
     files, metadata and preprocessed papers text
+    :param save_dir: path to papers data (save all data here)
+    :param n_download_years: # how many years' data to parse starting from the 1987, if None download all years data
+    :param n_download_papers_per_year: how many papers per year to load, if None download all years' papers
     """
     main_url = 'https://proceedings.neurips.cc'
     main_response = requests.get(main_url)
@@ -78,8 +95,9 @@ def get_all_papers(save_dir='./test_papers', n_download_years=None, n_download_p
         if not os.path.exists(path):
             os.mkdir(path)
 
-    add_year_urls = sorted(
-        [i.a['href'] for i in BeautifulSoup(main_response.text, 'html.parser').find_all('div', 'col-sm')[0].find_all('li')])
+    add_year_urls = sorted([i.a['href'] for i in BeautifulSoup(main_response.text, 'html.parser')
+                           .find_all('div', 'col-sm')[0]
+                           .find_all('li')])
     if n_download_years is not None:
         add_year_urls = add_year_urls[:n_download_years]
     for add_year_url in tqdm(add_year_urls, leave=False, desc='Years'):
@@ -89,6 +107,11 @@ def get_all_papers(save_dir='./test_papers', n_download_years=None, n_download_p
 
 
 def index_papers(save_dir, papers_dir):
+    """
+    Add all papers from papers_dir to index
+    :param save_dir: path to papers data (all data is saved here)
+    :param papers_dir: path to papers pdfs
+    """
     papers_index = {ind: paper[:-4] for ind, paper in enumerate(os.listdir(papers_dir))}
     with open(os.path.join(save_dir, 'papers_index.pkl'), 'wb') as f:
         pickle.dump(papers_index, f)

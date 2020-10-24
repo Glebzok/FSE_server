@@ -10,6 +10,7 @@ CORS(app)
 def hello():
     return 'hello'
 
+
 @app.route("/search_by_query", methods=['GET'])
 def search_by_query():
     query = request.args.get('query', default="", type=str)
@@ -24,13 +25,6 @@ def search_by_query():
 @app.route("/search_by_dataset")
 def search_by_dataset():
     return jsonify({'response': request.json})
-
-
-# @app.route('/download/<filename>')
-# def download_file(filename):
-#     print(os.path.join(main_path, 'pdf', filename + '.pdf'))
-#     return send_file(os.path.join(main_path, 'pdf'),
-#                                filename + '.pdf', as_attachment=True)
 
 
 if __name__ == "__main__":
