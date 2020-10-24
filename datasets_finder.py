@@ -80,7 +80,7 @@ def get_papers_to_dataset(paper_data_path):
             continue
 
         if type(paper_text) == str:
-            evaluation_text = extract_evaluation_part(paper_text)
+            evaluation_text = extract_evaluation_part(paper_text, paper_data_path)
 
             if evaluation_text is not None:
                 evaluation_text = evaluation_text.lower()
