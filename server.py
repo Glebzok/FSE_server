@@ -22,10 +22,5 @@ def search_by_query():
         return jsonify({'response': response}), 200
 
 
-@app.route("/search_by_dataset")
-def search_by_dataset():
-    return jsonify({'response': request.json})
-
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
