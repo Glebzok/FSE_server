@@ -46,7 +46,7 @@ def add_articles(papers_data_path, new_papers_path, pdf_papers_path, preprocesse
     with open(os.path.join(papers_data_path, 'tfidf_matrix.pkl'), 'rb') as f:
         tfidf_data, words = pickle.load(f)
 
-    with open(os.path.join(papers_data_path, 'dataset_with_articles.pkl'), 'wb') as f:
+    with open(os.path.join(papers_data_path, 'dataset_with_articles.pkl'), 'rb') as f:
         dataset_with_articles = pickle.load(f)
 
     with open(os.path.join(papers_data_path, 'wiki_datasets.pkl'), 'rb') as f:
@@ -86,7 +86,6 @@ def add_articles(papers_data_path, new_papers_path, pdf_papers_path, preprocesse
 
     with open(os.path.join(papers_data_path, 'papers_index.pkl'), 'wb') as f:
         pickle.dump(papers_index, f)
-
 
     with open(os.path.join(papers_data_path, 'tfidf_matrix.pkl'), 'wb') as f:
         pickle.dump([tfidf_data, words], f)
