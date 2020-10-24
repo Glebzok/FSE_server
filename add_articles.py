@@ -87,6 +87,7 @@ def add_articles(papers_data_path, new_papers_path, pdf_papers_path, preprocesse
     with open(os.path.join(papers_data_path, 'papers_index.pkl'), 'wb') as f:
         pickle.dump(papers_index, f)
 
+
     with open(os.path.join(papers_data_path, 'tfidf_matrix.pkl'), 'wb') as f:
         pickle.dump([tfidf_data, words], f)
 
@@ -109,7 +110,7 @@ if __name__ == '__main__':
     if parser.parse_args().r:
         n_years = int(parser.parse_args().y)
         n_articles_per_year = int(parser.parse_args().a)
-        reinit_articles_base(papers_data_path, n_years, n_articles_per_year)
+        reinit_articles_base(papers_data_path, 'pdf', n_years, n_articles_per_year)
 
     else:
         add_articles(papers_data_path, 'new_papers', 'pdf', 'preprocessed_papers')
