@@ -46,6 +46,7 @@ The server has two endpoints: /hello and /search_by_query
 The first one is made for server pinging purpose. It returns hello message in response to GET request.
 The second one is for query answering purpose. It receives a search query as an url argument 'query' and returns
 the response in the following JSON format.
+
 ```json
 {'response':{'result': [{'name': paper1_name, 'link': paper1_link.pdf}, 
                         {'name': paper2_name, 'link': paper2_link.pdf}]}}
