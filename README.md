@@ -16,7 +16,7 @@ heroku ps:scale web=1
 ```
 
 ## Initializing papers database
-When the application is deployed, only all papers are downloaded to the database, but it take much time (2-8 hours, depending on internet connection), you can change that by modifying the Dockerfile or Procfile accordingly (see add_articles.py), or runing add_articles.py manually.
+When the application is deployed, only 200 papers per year are downloaded to the database, (we are restricted by Heroku), you can change that by modifying the Dockerfile or Procfile accordingly (see add_articles.py), or runing add_articles.py manually.
 You can specify the number of years and the number of papers per year to download.
 ```bash
 python3 add_articles.py --help # to get help
