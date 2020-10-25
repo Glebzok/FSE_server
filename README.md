@@ -15,13 +15,21 @@ git push heroku master
 heroku ps:scale web=1
 ```
 
-## Initializing papers database
-When the application is deployed, only one paper exist in the database, you can change that by modifying the Dockerfile
-or Procfile accordingly (see add_articles.py), or run add_articles.py manually.
+## Initializing papers database (Heroku)
+When the application is deployed, only 200 papers per year are downloaded to the database, (we are restricted by Heroku), you can change that by modifying the Procfile accordingly (see add_articles.py).
+
+## Initializing papers database (Docker)
+You should envoke the initialization manually by starting add_articles.py inside Docker container after the application is deployed.
 You can specify the number of years and the number of papers per year to download.
 ```bash
 python3 add_articles.py --help # to get help
 python3 add_articles.py -r # download all the papers from https://neurips.cc/
+```
+
+## Checking papers downloading progreess
+After the the system deployment is started, you can check how many papers are downloaded at the moment by listing papers_data/pdf folder
+```bash
+ls /papers_data/pdf | wc -l
 ```
 
 ## Accessing the server running on Heroku
