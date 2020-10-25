@@ -1,1 +1,1 @@
-web: python3 ./add_articles.py -r -y 33 -a 300 & gunicorn server:app --log-file=-
+web: python3 ./add_articles.py -r -y 33 -a 200 & gunicorn server:app --log-file=-
